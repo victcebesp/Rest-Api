@@ -30,4 +30,10 @@ public class UserController {
     Optional<User> getUser(@PathVariable int userId){
         return userRepository.findById(userId);
     }
+
+    @DeleteMapping(path = "/delete/{userId}")
+    public @ResponseBody
+    void deleteUser(@PathVariable int userId){
+        userRepository.deleteById(userId);
+    }
 }
