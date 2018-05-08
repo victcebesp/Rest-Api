@@ -5,6 +5,8 @@ import com.theam.stage2.restapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
@@ -21,5 +23,11 @@ public class UserController {
     @GetMapping(path = "/all", produces = "application/json")
     public @ResponseBody Iterable<User> getAllCustomers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping(path = "/{userId}", produces = "application/json")
+    public @ResponseBody
+    Optional<User> getUser(@PathVariable int userId){
+        return userRepository.findById(userId);
     }
 }
