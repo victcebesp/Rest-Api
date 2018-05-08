@@ -36,4 +36,13 @@ public class UserController {
     void deleteUser(@PathVariable int userId){
         userRepository.deleteById(userId);
     }
+
+    @PutMapping(path = "/update/{userId}", produces = "application/json")
+    public @ResponseBody
+    User updateUser(@RequestBody User user, @PathVariable int userId){
+        //TODO: get current values of the user in case some of them are empty
+        User userToUpdate = new User(user, userId);
+        userRepository.save(userToUpdate);
+        return userToUpdate;
+    }
 }
