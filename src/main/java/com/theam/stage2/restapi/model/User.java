@@ -22,13 +22,6 @@ public class User {
     public User() {
     }
 
-    public User(User user) {
-        this.userName = user.getUserName();
-        this.active = user.getActive();
-        this.id = user.getId();
-        this.password = user.getPassword();
-    }
-
     public Integer getId() {
         return id;
     }
@@ -59,13 +52,6 @@ public class User {
 
     public void setActive(int active) {
         this.active = active;
-    }
-
-    @Override
-    public String toString() {
-        return "{\"userName\": \"" + userName + "\" ," +
-                "\"active\": \"" + active + "\" ," +
-                "\"id\": \"" + id + "\"}";
     }
 
 }
