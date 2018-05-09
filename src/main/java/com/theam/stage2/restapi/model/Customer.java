@@ -15,6 +15,7 @@ public class Customer {
     @Column(nullable = false)
     private String surname;
 
+    @Column(name = "photo_url")
     private String photoURL = "";
 
     private String creatorUser;
