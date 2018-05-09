@@ -22,6 +22,13 @@ public class User {
     public User() {
     }
 
+    public User(User user, int userId) {
+        this.userName = user.getUserName();
+        this.password = user.getPassword();
+        this.active = user.getActive();
+        this.id = userId;
+    }
+
     public Integer getId() {
         return id;
     }
