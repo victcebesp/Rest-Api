@@ -17,7 +17,7 @@ public class User {
     private String password;
 
     @Column(name = "active", nullable = false)
-    private int active;
+    private int active = 0;
 
     public User() {
     }
