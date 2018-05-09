@@ -32,4 +32,10 @@ public class CustomerController {
         return customerRepository.findById(customerId);
     }
 
+    @DeleteMapping(path="/delete/{customerId}", headers = "Accept=application/json", consumes = "application/json")
+    public @ResponseBody
+    void addCustomer(@PathVariable int customerId) {
+        customerRepository.deleteById(customerId);
+    }
+
 }
