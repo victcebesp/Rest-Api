@@ -5,6 +5,8 @@ import com.theam.stage2.restapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "/customers")
 public class CustomerController {
@@ -24,6 +26,10 @@ public class CustomerController {
         return customerRepository.findAll();
     }
 
-
+    @GetMapping(path = "/{customerId}", produces = "application/json")
+    public @ResponseBody
+    Optional<Customer> getCustomer(@PathVariable int  customerId){
+        return customerRepository.findById(customerId);
+    }
 
 }
