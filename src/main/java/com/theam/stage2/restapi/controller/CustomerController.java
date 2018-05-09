@@ -38,4 +38,12 @@ public class CustomerController {
         customerRepository.deleteById(customerId);
     }
 
+    @PutMapping(path = "/update/{customerId}", produces = "application/json")
+    public @ResponseBody
+    Customer updateUser(@RequestBody Customer customer, @PathVariable int customerId){
+        Customer customerToUpdate = customer.cloneCustomer(customerId);
+        customerRepository.save(customerToUpdate);
+        return customerToUpdate;
+    }
+
 }
