@@ -30,7 +30,16 @@ public class User {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.active = user.getActive();
+        this.roles = user.getRoles();
         this.id = userId;
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.userName = user.getUserName();
+        this.password = user.getPassword();
+        this.roles = user.getRoles();
+        this.active = user.getActive();
     }
 
     public Integer getId() {

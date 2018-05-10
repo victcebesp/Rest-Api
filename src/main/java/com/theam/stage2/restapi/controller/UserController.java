@@ -3,11 +3,13 @@ package com.theam.stage2.restapi.controller;
 import com.theam.stage2.restapi.model.User;
 import com.theam.stage2.restapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@Secured("ROLE_ADMIN")
 @RequestMapping(path = "/users")
 public class UserController {
 
