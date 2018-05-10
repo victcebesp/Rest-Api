@@ -3,10 +3,12 @@ package com.theam.stage2.restapi.controller;
 import com.theam.stage2.restapi.model.Customer;
 import com.theam.stage2.restapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Secured({"ROLE_ADMIN", "ROLE_USER"})
 @RestController
 @RequestMapping(path = "/customers")
 public class CustomerController {

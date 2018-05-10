@@ -33,11 +33,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers("/users/**").authenticated()
-                .anyRequest().permitAll()
-                .and()
-                .formLogin().permitAll();
+        http.
+                authorizeRequests()
+                    .antMatchers("/users/**").hasRole("ADMIN")
+                    .antMatchers("/customers/**").hasAnyRole("ADMIN", "USER")
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin();
     }
 
     private PasswordEncoder getPasswordEncoder() {
