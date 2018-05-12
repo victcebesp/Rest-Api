@@ -8,10 +8,10 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", nullable = false, length = 127, unique = true)
     private String userName;
 
     @Column(name = "password", nullable = false)

@@ -1,12 +1,15 @@
 package com.theam.stage2.restapi.model;
 
+import com.theam.stage2.restapi.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.persistence.*;
 
 @Entity
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -70,15 +73,12 @@ public class Customer {
         this.lastUpdateUser = lastUpdateUser;
     }
 
-    public Customer cloneCustomer(int customerId) {
-        Customer customer = new Customer();
-        customer.setId(customerId);
-        customer.setName(name);
-        customer.setSurname(surname);
-        customer.setPhotoURL(photoURL);
-        customer.setCreatorUser(creatorUser);
-        customer.setLastUpdateUser(lastUpdateUser);
-        return customer;
+    public void update(Customer customer, UserRepository userRepository) {
+        String loggedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (customer.getName() != null) this.name = customer.getName();
+        if (customer.getSurname() != null) this.surname = customer.getSurname();
+        if (customer.getPhotoURL() != null) this.photoURL = customer.getPhotoURL();
+        int loggedUserId = userRepository.findByUserName(loggedUsername).get().getId();
+        this.setLastUpdateUser("localhost:8080/users/" + loggedUserId);
     }
-
 }
