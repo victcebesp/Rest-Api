@@ -25,7 +25,7 @@ public class CustomerController {
     public @ResponseBody
     Customer addCustomer(@RequestBody Customer customer) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        int loggedUserId = userRepository.findByUserName(username).get().getId();
+        int loggedUserId = userRepository.findByUserName(username).get().getUserId();
         customer.setCreatorUser("/localhost:8080/users/" + loggedUserId);
         customer.setLastUpdateUser("/localhost:8080/users/" + loggedUserId);
         customerRepository.save(customer);

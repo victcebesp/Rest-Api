@@ -11,7 +11,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer userId;
 
     @Column(name = "user_name", nullable = false, length = 127, unique = true)
     private String userName;
@@ -33,19 +33,19 @@ public class User {
         this.password = user.getPassword();
         this.active = user.getActive();
         this.roles = user.getRoles();
-        this.id = userId;
+        this.userId = userId;
     }
 
     public User(User user) {
-        this.id = user.getId();
+        this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.roles = user.getRoles();
         this.active = user.getActive();
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
     public String getUserName() {
@@ -64,8 +64,8 @@ public class User {
         return roles;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public void setUserName(String userName) {

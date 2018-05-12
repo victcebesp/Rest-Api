@@ -44,7 +44,7 @@ public class UserController {
     @PutMapping(produces = "application/json")
     public @ResponseBody
     Optional<User> updateUser(@RequestBody User user){
-        Optional<User> userToUpdate = userRepository.findById(user.getId());
+        Optional<User> userToUpdate = userRepository.findById(user.getUserId());
         userToUpdate.get().update(user);
         userRepository.save(userToUpdate.get());
         return userToUpdate;
