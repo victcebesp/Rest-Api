@@ -1,5 +1,6 @@
 package com.theam.stage2.restapi.controller;
 
+import com.theam.stage2.restapi.model.Role;
 import com.theam.stage2.restapi.model.User;
 import com.theam.stage2.restapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @Secured("ROLE_ADMIN")
@@ -48,5 +50,15 @@ public class UserController {
         userToUpdate.get().update(user);
         userRepository.save(userToUpdate.get());
         return userToUpdate;
+    }
+
+    @PostMapping(path = "/{userId}/roles", produces = "application/json", consumes = "application/json", headers = "Accept=application/json")
+    public @ResponseBody
+    Optional<User> addUserRol(@RequestBody Role role, @PathVariable int userId){
+        Optional<User> user = userRepository.findById(userId);
+        Set<Role> roles = user.get().getRoles();
+        roles.add(role);
+        user.get().setRoles(roles);
+        return user;
     }
 }
