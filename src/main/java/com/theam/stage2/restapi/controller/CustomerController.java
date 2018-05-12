@@ -52,7 +52,7 @@ public class CustomerController {
     @PutMapping(path = "/update", produces = "application/json")
     public @ResponseBody
     Optional<Customer> updateCustomer(@RequestBody Customer customer){
-        Optional<Customer> customerToUpdate = customerRepository.findById(customer.getId());
+        Optional<Customer> customerToUpdate = customerRepository.findById(customer.getCustomerId());
         customerToUpdate.get().update(customer, userRepository);
         customerRepository.save(customerToUpdate.get());
         return customerToUpdate;
