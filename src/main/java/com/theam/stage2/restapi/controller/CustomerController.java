@@ -2,8 +2,10 @@ package com.theam.stage2.restapi.controller;
 
 import com.theam.stage2.restapi.model.Customer;
 import com.theam.stage2.restapi.repositories.CustomerRepository;
+import com.theam.stage2.restapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -16,9 +18,16 @@ public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping(path="/add", headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
     public @ResponseBody
     Customer addCustomer(@RequestBody Customer customer) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int loggedUserId = userRepository.findByUserName(username).get().getId();
+        customer.setCreatorUser("/localhost:8080/users/" + loggedUserId);
+        customer.setLastUpdateUser("/localhost:8080/users/" + loggedUserId);
         customerRepository.save(customer);
         return customer;
     }
@@ -40,11 +49,12 @@ public class CustomerController {
         customerRepository.deleteById(customerId);
     }
 
-    @PutMapping(path = "/update/{customerId}", produces = "application/json")
+    @PutMapping(path = "/update", produces = "application/json")
     public @ResponseBody
-    Customer updateUser(@RequestBody Customer customer, @PathVariable int customerId){
-        Customer customerToUpdate = customer.cloneCustomer(customerId);
-        customerRepository.save(customerToUpdate);
+    Optional<Customer> updateCustomer(@RequestBody Customer customer){
+        Optional<Customer> customerToUpdate = customerRepository.findById(customer.getId());
+        customerToUpdate.get().update(customer, userRepository);
+        customerRepository.save(customerToUpdate.get());
         return customerToUpdate;
     }
 
