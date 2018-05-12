@@ -1,5 +1,7 @@
 package com.theam.stage2.restapi.model;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -20,7 +22,7 @@ public class User {
     @Column(name = "active", nullable = false)
     private int active = 0;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {
@@ -80,5 +82,11 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void update(User user) {
+        if (user.getUserName() != null) this.userName = user.getUserName();
+        if (user.getPassword() != null) this.password = new BCryptPasswordEncoder(11).encode(user.getPassword());
+        if (user.getRoles() != null) this.roles = user.getRoles();
     }
 }
