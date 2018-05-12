@@ -17,15 +17,15 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping(path = "/add", headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
+    @PostMapping(headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
     public @ResponseBody User addUser(@RequestBody User user) {
         user.setPassword(new BCryptPasswordEncoder(11).encode(user.getPassword()));
         userRepository.save(user);
         return user;
     }
 
-    @GetMapping(path = "/all", produces = "application/json")
-    public @ResponseBody Iterable<User> getAllCustomers() {
+    @GetMapping(produces = "application/json")
+    public @ResponseBody Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -35,13 +35,13 @@ public class UserController {
         return userRepository.findById(userId);
     }
 
-    @DeleteMapping(path = "/delete/{userId}")
+    @DeleteMapping(path = "/{userId}")
     public @ResponseBody
     void deleteUser(@PathVariable int userId){
         userRepository.deleteById(userId);
     }
 
-    @PutMapping(path = "/update", produces = "application/json")
+    @PutMapping(produces = "application/json")
     public @ResponseBody
     Optional<User> updateUser(@RequestBody User user){
         Optional<User> userToUpdate = userRepository.findById(user.getId());
