@@ -22,7 +22,7 @@ public class User {
     @Column(name = "active", nullable = false)
     private int active = 0;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {
