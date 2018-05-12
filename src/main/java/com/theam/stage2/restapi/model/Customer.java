@@ -10,7 +10,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer customerId;
 
     @Column(nullable = false)
     private String name;
@@ -25,8 +25,8 @@ public class Customer {
 
     private String lastUpdateUser;
 
-    public Integer getId() {
-        return id;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
     public String getName() {
@@ -49,8 +49,8 @@ public class Customer {
         return lastUpdateUser;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public void setName(String name) {
