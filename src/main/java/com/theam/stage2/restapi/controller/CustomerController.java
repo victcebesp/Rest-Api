@@ -40,11 +40,12 @@ public class CustomerController {
         customerRepository.deleteById(customerId);
     }
 
-    @PutMapping(path = "/update/{customerId}", produces = "application/json")
+    @PutMapping(path = "/update", produces = "application/json")
     public @ResponseBody
-    Customer updateUser(@RequestBody Customer customer, @PathVariable int customerId){
-        Customer customerToUpdate = customer.cloneCustomer(customerId);
-        customerRepository.save(customerToUpdate);
+    Optional<Customer> updateCustomer(@RequestBody Customer customer){
+        Optional<Customer> customerToUpdate = customerRepository.findById(customer.getId());
+        customerToUpdate.get().update(customer, userRepository);
+        customerRepository.save(customerToUpdate.get());
         return customerToUpdate;
     }
 
