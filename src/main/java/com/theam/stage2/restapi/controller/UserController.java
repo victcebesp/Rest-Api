@@ -61,4 +61,13 @@ public class UserController {
         user.get().setRoles(roles);
         return user;
     }
+
+    @DeleteMapping(path = "/{userId}/roles", produces = "application/json", consumes = "application/json", headers = "Accept=application/json")
+    public @ResponseBody
+    Optional<User> removeUserRol(@RequestBody Role role, @PathVariable int userId){
+        Optional<User> user = userRepository.findById(userId);
+        Set<Role> roles = user.get().getRoles();
+        if (roles.contains(role)) roles.remove(role);
+        return user;
+    }
 }
