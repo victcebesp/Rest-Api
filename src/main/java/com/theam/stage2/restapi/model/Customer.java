@@ -1,12 +1,15 @@
 package com.theam.stage2.restapi.model;
 
+import com.theam.stage2.restapi.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.persistence.*;
 
 @Entity
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
