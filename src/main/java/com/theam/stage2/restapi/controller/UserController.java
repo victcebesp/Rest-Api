@@ -4,6 +4,7 @@ import com.theam.stage2.restapi.model.User;
 import com.theam.stage2.restapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class UserController {
 
     @PostMapping(path = "/add", headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
     public @ResponseBody User addUser(@RequestBody User user) {
+        user.setPassword(new BCryptPasswordEncoder(11).encode(user.getPassword()));
         userRepository.save(user);
         return user;
     }
@@ -39,12 +41,12 @@ public class UserController {
         userRepository.deleteById(userId);
     }
 
-    @PutMapping(path = "/update/{userId}", produces = "application/json")
+    @PutMapping(path = "/update", produces = "application/json")
     public @ResponseBody
-    User updateUser(@RequestBody User user, @PathVariable int userId){
-        //TODO: get current values of the user in case some of them are empty
-        User userToUpdate = new User(user, userId);
-        userRepository.save(userToUpdate);
+    Optional<User> updateUser(@RequestBody User user){
+        Optional<User> userToUpdate = userRepository.findById(user.getId());
+        userToUpdate.get().update(user);
+        userRepository.save(userToUpdate.get());
         return userToUpdate;
     }
 }
