@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -70,17 +71,11 @@ public class CustomerController {
         return customerToUpdate;
     }
 
-    @GetMapping("{customerId}/image")
-    public String listUploadedFiles() throws IOException {
-        return "uploadForm";
-    }
-
-    @PostMapping("{customerId}/image")
+    @PostMapping("images")
     public String handleFileUpload(@RequestParam("image") MultipartFile file,
-                                   RedirectAttributes redirectAttributes, @RequestParam int customerId) {
+                                   RedirectAttributes redirectAttributes, @RequestParam("customerId") Integer customerId) {
 
-        Optional<Customer> customer = customerRepository.findById(customerId);
-        customer.get().setPhotoURL("tmp/images/" + file.getOriginalFilename());
+        updatePhotoUrl(file.getOriginalFilename(), customerId);
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
@@ -91,6 +86,12 @@ public class CustomerController {
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
+    }
+
+    private void updatePhotoUrl(String filename, int customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        customer.get().setPhotoURL("tmp/images/" + filename);
+        customerRepository.save(customer.get());
     }
 
 }
