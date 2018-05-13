@@ -1,27 +1,39 @@
 package com.theam.stage2.restapi.controller;
 
+import com.theam.stage2.restapi.exceptions.StorageFileNotFoundException;
 import com.theam.stage2.restapi.model.Customer;
 import com.theam.stage2.restapi.repositories.CustomerRepository;
 import com.theam.stage2.restapi.repositories.UserRepository;
+import com.theam.stage2.restapi.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
-@RestController
+@Controller
 @RequestMapping(path = "/customers")
 public class CustomerController {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
+    private final StorageService storageService;
 
     @Autowired
-    private UserRepository userRepository;
+    public CustomerController(CustomerRepository customerRepository, UserRepository userRepository, StorageService storageService) {
+        this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
+        this.storageService = storageService;
+    }
 
-    @PostMapping(path="/add", headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
+    @PostMapping(headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
     public @ResponseBody
     Customer addCustomer(@RequestBody Customer customer) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -32,7 +44,7 @@ public class CustomerController {
         return customer;
     }
 
-    @GetMapping(path="/all", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public @ResponseBody Iterable<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
@@ -43,19 +55,42 @@ public class CustomerController {
         return customerRepository.findById(customerId);
     }
 
-    @DeleteMapping(path="/delete/{customerId}", headers = "Accept=application/json", consumes = "application/json")
+    @DeleteMapping(path="{customerId}", headers = "Accept=application/json", consumes = "application/json")
     public @ResponseBody
     void addCustomer(@PathVariable int customerId) {
         customerRepository.deleteById(customerId);
     }
 
-    @PutMapping(path = "/update", produces = "application/json")
+    @PutMapping(produces = "application/json")
     public @ResponseBody
     Optional<Customer> updateCustomer(@RequestBody Customer customer){
         Optional<Customer> customerToUpdate = customerRepository.findById(customer.getCustomerId());
         customerToUpdate.get().update(customer, userRepository);
         customerRepository.save(customerToUpdate.get());
         return customerToUpdate;
+    }
+
+    @GetMapping("{customerId}/image")
+    public String listUploadedFiles() throws IOException {
+        return "uploadForm";
+    }
+
+    @PostMapping("{customerId}/image")
+    public String handleFileUpload(@RequestParam("image") MultipartFile file,
+                                   RedirectAttributes redirectAttributes, @RequestParam int customerId) {
+
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        customer.get().setPhotoURL("tmp/images/" + file.getOriginalFilename());
+        storageService.store(file);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "redirect:/customers";
+    }
+
+    @ExceptionHandler(StorageFileNotFoundException.class)
+    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+        return ResponseEntity.notFound().build();
     }
 
 }
