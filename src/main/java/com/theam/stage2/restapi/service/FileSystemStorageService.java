@@ -1,7 +1,7 @@
-package com.theam.stage2.restapi.storage.service;
+package com.theam.stage2.restapi.service;
 
-import com.theam.stage2.restapi.storage.exceptions.StorageException;
-import com.theam.stage2.restapi.storage.exceptions.StorageFileNotFoundException;
+import com.theam.stage2.restapi.exceptions.StorageException;
+import com.theam.stage2.restapi.exceptions.StorageFileNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @Service
 public class FileSystemStorageService implements StorageService {
 
-    private final Path rootLocation = Paths.get("tmp/files");
+    private final Path rootLocation = Paths.get("tmp/images");
 
     @Override
     public void store(MultipartFile file) {

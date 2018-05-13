@@ -1,4 +1,4 @@
-package com.theam.stage2.restapi.storage.exceptions;
+package com.theam.stage2.restapi.exceptions;
 
 public class StorageFileNotFoundException extends StorageException{
     public StorageFileNotFoundException(String message) {
