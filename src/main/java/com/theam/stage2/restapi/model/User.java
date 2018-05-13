@@ -79,6 +79,5 @@ public class User {
     public void update(User user) {
         if (user.getUserName() != null) this.userName = user.getUserName();
         if (user.getPassword() != null) this.password = new BCryptPasswordEncoder(11).encode(user.getPassword());
-        if (user.getRoles() != null) this.roles = user.getRoles();
     }
 }
