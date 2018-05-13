@@ -19,9 +19,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "active", nullable = false)
-    private int active = 0;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -33,7 +30,6 @@ public class User {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.roles = user.getRoles();
-        this.active = user.getActive();
     }
 
     public Integer getUserId() {
@@ -46,10 +42,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public int getActive() {
-        return active;
     }
 
     public Set<Role> getRoles() {
@@ -66,10 +58,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setActive(int active) {
-        this.active = active;
     }
 
     public void setRoles(Set<Role> roles) {
