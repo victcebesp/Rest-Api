@@ -1,4 +1,4 @@
-package com.theam.stage2.restapi.storage.service;
+package com.theam.stage2.restapi.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
