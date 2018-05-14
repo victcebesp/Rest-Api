@@ -10,7 +10,7 @@ With this API you will be able to manage customers data. This data can be manage
     - Manage customer data.
     - Manage other users data.
     
-![Architecture](/Users/macbookpro/IdeaProjects/rest-api/readmeImages/Architecture.png)
+![Architecture](https://github.com/victcebesp/Rest-Api/blob/master/readmeImages/Architecture.png?raw=true)
 
 ##First steps
 First things first. To user this API, you must be logged in. By default there is an admin user:
