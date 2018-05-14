@@ -123,6 +123,7 @@ or
 DELETE http://your.domain/users/{userId}/roles
 ```
 Just as when adding a role, add to the request body the role you want to delete to the user specified in a json format.
+An admin cannot change itself roles.
 
 ```json
 {
