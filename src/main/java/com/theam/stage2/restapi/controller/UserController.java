@@ -19,13 +19,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping(headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
-    public @ResponseBody User addUser(@RequestBody User user) {
-        user.setPassword(new BCryptPasswordEncoder(11).encode(user.getPassword()));
-        userRepository.save(user);
-        return user;
-    }
-
     @GetMapping(produces = "application/json")
     public @ResponseBody Iterable<User> getAllUsers() {
         return userRepository.findAll();
@@ -35,6 +28,13 @@ public class UserController {
     public @ResponseBody
     Optional<User> getUser(@PathVariable int userId){
         return userRepository.findById(userId);
+    }
+
+    @PostMapping(headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
+    public @ResponseBody User addUser(@RequestBody User user) {
+        user.setPassword(new BCryptPasswordEncoder(11).encode(user.getPassword()));
+        userRepository.save(user);
+        return user;
     }
 
     @DeleteMapping(path = "/{userId}")
