@@ -34,11 +34,13 @@ public class Role {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
         Role role = (Role) o;
-        if (roleId != role.roleId) return false;
-        return this.role != null ? this.role.equals(role.role) : role.role == null;
+        return role.getRoleId() == this.getRoleId() &&
+                role.getRole().equals(this.getRole());
+    }
+
+    @Override
+    public int hashCode(){
+        return 37 * role.hashCode() + roleId;
     }
 }

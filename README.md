@@ -1,7 +1,7 @@
 REST-API. The CRM Service.
 ---
 
-##Introduction
+## Introduction
 
 With this API you will be able to manage customers data. This data can be managed by users. Depending on the user role, a user will be able to manage other users data. In other words:
 - User with **USER** role can:
@@ -10,30 +10,30 @@ With this API you will be able to manage customers data. This data can be manage
     - Manage customer data.
     - Manage other users data.
     
-![Architecture](/Users/macbookpro/IdeaProjects/rest-api/readmeImages/Architecture.png)
+![Architecture](https://github.com/victcebesp/Rest-Api/blob/master/readmeImages/Architecture.png?raw=true)
 
-##First steps
+## First steps
 First things first. To user this API, you must be logged in. By default there is an admin user:
 - **Username:** Admin
 - **Password:** Admin
 
 I recommend changing this user password or once there is another admin delete this one.
 
-##Admin functions
+## Admin functions
 
 As an admin user, you will be able to do the next actions:
 
-####Get all users
+#### Get all users
 ```
 GET http://your.domain/users
 ```
 
-####Get a specific user
+#### Get a specific user
 ```
 GET http://your.domain/users/{userdId}
 ```
 
-####Create a user
+#### Create a user
 ```
 POST http://your.domain/users
 ```
@@ -63,12 +63,12 @@ An example of this could be:
 
 By the way, the unique roles available are the once showed above. 
 
-####Delete a user
+#### Delete a user
 ```
 DELETE http://your.domain/users/{userId}
 ```
 
-####Update a user
+#### Update a user
 ```
 PUT http://your.domain/users
 ```
@@ -98,7 +98,7 @@ So some examples of available json could be:
 }
 ```
 
-####Add a user role
+#### Add a user role
 ```
 POST http://your.domain/users/{userId}/roles
 ```
@@ -118,11 +118,12 @@ or
 }
 ```
 
-####Delete a user role
+#### Delete a user role
 ```
 DELETE http://your.domain/users/{userId}/roles
 ```
 Just as when adding a role, add to the request body the role you want to delete to the user specified in a json format.
+An admin cannot change itself roles.
 
 ```json
 {
