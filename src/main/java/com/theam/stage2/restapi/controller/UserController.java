@@ -57,8 +57,10 @@ public class UserController {
     Optional<User> addUserRol(@RequestBody Role role, @PathVariable int userId){
         Optional<User> user = userRepository.findById(userId);
         Set<Role> roles = user.get().getRoles();
-        roles.add(role);
-        user.get().setRoles(roles);
+        if (roles.add(role)) {
+            user.get().setRoles(roles);
+            userRepository.save(user.get());
+        }
         return user;
     }
 
