@@ -67,7 +67,10 @@ public class UserController {
     Optional<User> removeUserRol(@RequestBody Role role, @PathVariable int userId){
         Optional<User> user = userRepository.findById(userId);
         Set<Role> roles = user.get().getRoles();
-        if (roles.contains(role)) roles.remove(role);
+        if (roles.remove(role)) {
+            user.get().setRoles(roles);
+            userRepository.save(user.get());
+        }
         return user;
     }
 }
