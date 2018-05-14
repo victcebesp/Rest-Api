@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,13 +67,18 @@ public class UserController {
 
     @DeleteMapping(path = "/{userId}/roles", produces = "application/json", consumes = "application/json", headers = "Accept=application/json")
     public @ResponseBody
-    Optional<User> removeUserRol(@RequestBody Role role, @PathVariable int userId){
+    Optional<User> removeUserRol(@RequestBody Role role, @PathVariable int userId, Principal loggedUser){
         Optional<User> user = userRepository.findById(userId);
+        if (isAutodeletingAdminRole(loggedUser, user)) return user;
         Set<Role> roles = user.get().getRoles();
         if (roles.remove(role)) {
             user.get().setRoles(roles);
             userRepository.save(user.get());
         }
         return user;
+    }
+
+    private boolean isAutodeletingAdminRole(Principal loggedUser, Optional<User> user) {
+        return user.get().getUserName().equals(loggedUser.getName());
     }
 }
