@@ -138,3 +138,98 @@ or
   "role" : "ADMIN"
 }
 ```
+
+## User functions
+
+Here you can find which actions a user with **USER** role can do. All this actions can be handled as well with the **ADMIN** role:
+
+#### Get all customer
+```
+GET http://your.domain/customers
+```
+#### Get a specific customer
+```
+GET http://your.domain/customers/{customerId}
+```
+
+#### Create a customer
+```
+POST http://your.domain/customers
+```
+In order to create a customer, you will have to pass within the request body a JSON with the next user information:
+- Name
+- Surname
+
+An example of this could be:
+
+```json
+{
+  "name" : "Anakin",
+  "surname" : "Skywalker"
+}
+```
+What the server would do is create a customer with the specified information, but it also will add by default:
+ - Photo URL
+ - Customer Id
+ - A reference to the use who created the customer
+ - A reference to the last user that updated the customer (initially the same one that created it)
+ 
+ #### Delete a customer
+ ```
+ DELETE http://your.domain/customers/{customerId}
+ ```
+ #### Update a customer
+ ```
+ PUT http://your.domain/customers
+ ```
+ To update a customer, you should send within the request body a json with the customer information to update. **You have to send in the json the customer ID to update**. See examples.
+ 
+ **IMPORTANT**With this request you can only update the name and surname. The reference to the creator user will not change any more. The server will update automatically the last user that updated the customer. The photo URL mechanism will be explained below.
+ 
+ So some examples of available json could be:
+ 
+ ```json
+ {
+   "customerId" : 2,
+   "username" : "Obi-One",
+   "password" : "Kenobi"
+ }
+ ```
+ ```json
+ {
+   "customerId" : 1,
+   "username" : "Obi-One"
+ }
+ ```
+ ```json
+ {
+   "customerId" : 2,
+   "surname" : "Kenobi"
+ }
+ ```
+ 
+### Upload a customer image
+```
+POST http://your.domain/customers/images
+```
+In order to upload an image for an specific customer, you should send in the request to things:
+- The image ( as multipart file ) **IMPORTANT** The request parameter name MUST be "image".
+- The customer ID to whom you want to upload the photo. **IMPORTANT** This request parameter MUST be named as "customerId".
+
+Here is an example of a possible HTML form to easily upload a photo for an specific customer:
+ 
+ ```html
+ <html>
+ <body>
+ <div>
+     <form method="POST" enctype="multipart/form-data" action="/files">
+         <table>
+             <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+             <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+             <input type="hidden" name="customerId" value="1">
+         </table>
+     </form>
+ </div>
+ </body>
+ </html>
+ ```

@@ -77,7 +77,6 @@ public class Customer {
         String loggedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         if (customer.getName() != null) this.name = customer.getName();
         if (customer.getSurname() != null) this.surname = customer.getSurname();
-        if (customer.getPhotoURL() != null) this.photoURL = customer.getPhotoURL();
         int loggedUserId = userRepository.findByUserName(loggedUsername).get().getUserId();
         this.setLastUpdateUser("localhost:8080/users/" + loggedUserId);
     }
