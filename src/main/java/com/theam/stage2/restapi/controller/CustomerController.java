@@ -34,17 +34,6 @@ public class CustomerController {
         this.storageService = storageService;
     }
 
-    @PostMapping(headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
-    public @ResponseBody
-    Customer addCustomer(@RequestBody Customer customer) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        int loggedUserId = userRepository.findByUserName(username).get().getUserId();
-        customer.setCreatorUser("/localhost:8080/users/" + loggedUserId);
-        customer.setLastUpdateUser("/localhost:8080/users/" + loggedUserId);
-        customerRepository.save(customer);
-        return customer;
-    }
-
     @GetMapping(produces = "application/json")
     public @ResponseBody Iterable<Customer> getAllCustomers() {
         return customerRepository.findAll();
@@ -56,9 +45,20 @@ public class CustomerController {
         return customerRepository.findById(customerId);
     }
 
+    @PostMapping(headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
+    public @ResponseBody
+    Customer addCustomer(@RequestBody Customer customer) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int loggedUserId = userRepository.findByUserName(username).get().getUserId();
+        customer.setCreatorUser("/localhost:8080/users/" + loggedUserId);
+        customer.setLastUpdateUser("/localhost:8080/users/" + loggedUserId);
+        customerRepository.save(customer);
+        return customer;
+    }
+
     @DeleteMapping(path="{customerId}", headers = "Accept=application/json", consumes = "application/json")
     public @ResponseBody
-    void addCustomer(@PathVariable int customerId) {
+    void deleteCustomer(@PathVariable int customerId) {
         customerRepository.deleteById(customerId);
     }
 
