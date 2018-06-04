@@ -222,9 +222,9 @@ Here is an example of a possible HTML form to easily upload a photo for an speci
  <html>
  <body>
  <div>
-     <form method="POST" enctype="multipart/form-data" action="/files">
+     <form method="POST" enctype="multipart/form-data" action="/customers/image">
          <table>
-             <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+             <tr><td>File to upload:</td><td><input type="file" name="image" /></td></tr>
              <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
              <input type="hidden" name="customerId" value="1">
          </table>
